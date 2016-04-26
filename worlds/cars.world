@@ -42,32 +42,32 @@ road_straight
 
 road_bend
 (
-  pose [40 7 0 0]
+  pose [40 0 0 0]
 )
 
 road_bend
 (
-  pose [40 27 0 90]
+  pose [40 20 0 90]
 )
 
 road_straight
 (
-  pose [-20 34 0 0]
+  pose [-20 20 0 0]
 )
 
 road_straight
 (
-  pose [20 34 0 0]
+  pose [20 20 0 0]
 )
 
 road_bend
 (
-  pose [-40 7 0 270]
+  pose [-40 0 0 270]
 )
 
 road_bend
 (
-  pose [-40 27 0 180]
+  pose [-40 20 0 180]
 )
 
 road_turnout

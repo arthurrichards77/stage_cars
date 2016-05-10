@@ -27,60 +27,13 @@ define road_straight road_tile
 
 # this one does just a turnout
 
-define road_turnout road
+define road_turnout road_straight
 (
   # side road
-  size [20 20 0.01]
-  block
+  road
   (
-  points 4
-  point[0] [0.35 1]
-  point[1] [0.35 0.35]
-  point[2] [0.65 0.35]
-  point[3] [0.65 1]
-  z [0 0.9]
-  )
-  # chamfer at the turn
-  block
-  (
-  points 4
-  point[0] [0.3 0.3]
-  point[1] [0.35 0.35]
-  point[2] [0.65 0.35]
-  point[3] [0.7 0.3]
-  z [0 0.9]
-  )
-  # main road
-  block
-  (
-  points 4
-  point[0] [0 0]
-  point[1] [1 0]
-  point[2] [1 0.3]
-  point[3] [0 0.3]
-  z [0 0.9]
-  )
-  # main road centre line
-  block
-  (
-  points 4
-  point[0] [0 0.14]
-  point[1] [1 0.14]
-  point[2] [1 0.16]
-  point[3] [0 0.16]
-  z [0 1.0]
-  color "white"
-  )
-  # side road centre line
-  block
-  (
-  points 4
-  point[0] [0.49 0.3]
-  point[1] [0.51 0.3]
-  point[2] [0.51 1]
-  point[3] [0.49 1]
-  z [0 1.0]
-  color "white"
+    size [6 7 0.01]
+    pose [0 6.5 0 0]
   )
 )
 

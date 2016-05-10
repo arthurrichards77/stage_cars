@@ -72,11 +72,11 @@ road_bend
 
 road_turnout
 (
-  pose [0 7 0 0]
+  pose [0 0 0 0]
 )
 
 road_turnout
 (
-  pose [0 27 0 180]
+  pose [0 20 0 180]
 )
 

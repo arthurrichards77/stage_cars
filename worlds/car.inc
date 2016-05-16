@@ -2,11 +2,14 @@
 # size is about a LandRover
 # made as two boxes so it steers about its rear axle
 
+include "sick.inc"
+
 define car position
 (
   drive "diff"
   color "blue"
   size [2 1.8 2]
+  velocity_bounds [-10 10 -10 10 -10 10 -90 90]
   model
   (
     color "white"  
@@ -24,5 +27,13 @@ define car_cam car
     resolution [320 240]
     range [0.2 80]        
     color "red"
+  )
+)
+
+define car_laser car
+(
+  sicklaser
+  (
+    pose [3.1 0 -1.2 0.0]
   )
 )

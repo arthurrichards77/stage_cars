@@ -1,0 +1,7 @@
+<launch>
+
+<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/cars.world" />
+
+<node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" ns="robot_0" />
+
+</launch>

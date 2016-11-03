@@ -1,10 +1,66 @@
 <launch>
 
+<arg name="tuning" default="false" />
+
 <node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/two_cars.world" />
 
-<node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" ns="robot_0" />
+<group ns="robot_0">
 
-<node pkg="tf" type="static_transform_publisher" name="link_tf_car1_car0" args="2 4 0 1.047198 0 0 robot_0/odom robot_1/odom 100" />
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car0" args="0 1.5 0 0 0 0 world robot_0/odom 100" />
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower">
+      <param name="steering/init_gains/kp" type="double" value="0.3" />
+      <param name="steering/init_gains/ki" type="double" value="0.0" />
+      <param name="steering/init_gains/kd" type="double" value="0.0" />
+  </node>
+
+  <node pkg="brl_drones" name="tuning" type="pid_tune_gui.py" ns="path_follower/steering" if="$(arg tuning)" />
+
+  <rosparam param="path">[
+  [6,1.5,0],
+  [30,1.5,0],
+  [38.5,10,deg(90)],
+  [30,18.5,deg(180)],
+  [6,18.5,deg(180)],
+  [1.5,14,deg(-90)],
+  [1.5,6,deg(-90)],
+  [6,1.5,0]
+  ]</rosparam>
+
+  <param name="speed" type="double" value="8.0" />
+
+</group>
+
+<group ns="robot_1">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="10 -1.5 0 3.1415927 0 0 world robot_1/odom 100" />
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower">
+      <param name="steering/init_gains/kp" type="double" value="0.3" />
+      <param name="steering/init_gains/ki" type="double" value="0.0" />
+      <param name="steering/init_gains/kd" type="double" value="0.0" />
+  </node>
+
+  <node pkg="brl_drones" name="tuning" type="pid_tune_gui.py" ns="path_follower/steering" if="$(arg tuning)" />
+
+  <rosparam param="path">[
+  [10,-1.5,deg(180)],
+  [-30,-1.5,deg(180)],
+  [-41.5,10,deg(90)],
+  [-30,21.5,0],
+  [30,21.5,0],
+  [41.5,10,deg(-90)],
+  [30,-1.5,deg(180)],
+  [12,-1.5,deg(180)]
+  ]</rosparam>
+
+  <param name="speed" type="double" value="8.0" />
+
+</group>
 
 <node pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
 

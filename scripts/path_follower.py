@@ -3,12 +3,20 @@ import rospy
 import roslib
 roslib.load_manifest('stage_cars')
 from geometry_msgs.msg import Twist, Point, PoseStamped
-from nav_msgs.msg import Path
+from nav_msgs.msg import Path, Odometry
 from math import sin, cos, atan2, sqrt
+import brl_drones.rospid
   
 rospy.init_node('path_follower', anonymous=True)
 pub_path = rospy.Publisher('path', Path, queue_size=1)
+pub_pose = rospy.Publisher('pose', PoseStamped, queue_size=1)
+pub_steer = rospy.Publisher('cmd_steer', Point, queue_size=1)
+steering_pid = brl_drones.rospid.Rospid(0.15,0.0,0.22,'~steering')
 my_rate = rospy.Rate(1)
+
+# get speed from parameter
+# won't move without it
+my_speed = rospy.get_param("speed",0.0)
 
 # grab coarse path from parameter
 path_param = rospy.get_param("path",[])
@@ -54,6 +62,50 @@ if len(my_path.poses)>1:
             smoothed_path.poses += [my_pose]
     # replace coarse path
     my_path = smoothed_path               
+
+# callback for control
+def ctrl_callback(data):
+  # extract x and y position information
+  x = data.pose.pose.position.x
+  y = data.pose.pose.position.y
+  # and quaternion info (just last two for heading)
+  qz = data.pose.pose.orientation.z
+  qw = data.pose.pose.orientation.w
+  # calculate the heading
+  theta = 2.0*atan2(qz,qw)
+  # add just a little lookahead
+  L = 4.0
+  x = x + L*cos(theta) 
+  y = y + L*sin(theta) 
+  # find the closest point on the path
+  ds = [sqrt((x-p.pose.position.x)*(x-p.pose.position.x)+(y-p.pose.position.y)*(y-p.pose.position.y)) for p in my_path.poses]
+  dmin = min(ds)
+  pmin = my_path.poses[ds.index(dmin)]
+  cx = pmin.pose.position.x
+  cy = pmin.pose.position.y
+  # project on to car's Y-axix (lateral)
+  e = (cy-y)*cos(theta)-(cx-x)*sin(theta)
+  # PID control for constant radius
+  #rospy.loginfo('Time is %f',rospy.get_rostime().to_sec())
+  u = steering_pid.update(e, 0.0, rospy.get_rostime().to_sec())
+  # saturate
+  u = brl_drones.rospid.saturate(u,0.3)
+  # command
+  v = Point()
+  v.x = my_speed
+  v.y = -u
+  # send it
+  pub_steer.publish(v)
+  # tell the world
+  #rospy.loginfo('Got e = %f ctrl=%f', e, u)
+  # publish pose info for viewing
+  pose_out = PoseStamped()
+  pose_out.header.frame_id = 'world'
+  pose_out.pose = data.pose.pose
+  pub_pose.publish(pose_out)
+
+# start the feedback
+pose_sub = rospy.Subscriber('base_pose_ground_truth', Odometry, ctrl_callback)
 
 while not rospy.is_shutdown():
     pub_path.publish(my_path)

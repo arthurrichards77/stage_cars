@@ -20,11 +20,11 @@ include "loop.world"
 
 car_cam
 (
-  pose [0 0 0 0] # [x y z deg]
+  pose [0 1.5 0 0] # [x y z deg]
 )
 
 car
 (
-  pose [2 4 0 60] # [x y z deg]
+  pose [10 -1.5 0 180] # [x y z deg]
   color "red"
 )

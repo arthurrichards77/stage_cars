@@ -11,22 +11,7 @@ window
   size [2000 2000]
 )
 
-include "car.inc"
 include "road.inc"
-
-# include cars in simulation
-# this simulation has two cars
-
-car_laser
-(
-  pose [0 0 0 0] # [x y z deg]
-)
-
-car
-(
-  pose [2 4 0 60] # [x y z deg]
-  color "red"
-)
 
 # now use macros to build a basic road oval
 

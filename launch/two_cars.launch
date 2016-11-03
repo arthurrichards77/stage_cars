@@ -1,7 +1,11 @@
 <launch>
 
-<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/cars.world" />
+<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/two_cars.world" />
 
 <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" ns="robot_0" />
+
+<node pkg="tf" type="static_transform_publisher" name="link_tf_car1_car0" args="2 4 0 1.047198 0 0 robot_0/odom robot_1/odom 100" />
+
+<node pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
 
 </launch>

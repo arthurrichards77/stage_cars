@@ -1,0 +1,11 @@
+<launch>
+
+<node pkg="stage_cars" type="path_follower.py" name="path_follower" />
+
+<rosparam param="path">[
+[0,0,0],
+[1,0,0],
+[4,3,deg(90)]
+]</rosparam>
+
+</launch>

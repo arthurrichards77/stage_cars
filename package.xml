@@ -42,7 +42,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>stage</run_depend>
   <run_depend>stage_ros</run_depend>
-  <run_depend>brl_drones</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

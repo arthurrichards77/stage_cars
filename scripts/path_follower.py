@@ -5,13 +5,14 @@ roslib.load_manifest('stage_cars')
 from geometry_msgs.msg import Twist, Point, PoseStamped
 from nav_msgs.msg import Path, Odometry
 from math import sin, cos, atan2, sqrt
-import brl_drones.rospid
   
 rospy.init_node('path_follower', anonymous=True)
 pub_path = rospy.Publisher('path', Path, queue_size=1)
 pub_pose = rospy.Publisher('pose', PoseStamped, queue_size=1)
 pub_steer = rospy.Publisher('cmd_steer', Point, queue_size=1)
-steering_pid = brl_drones.rospid.Rospid(0.15,0.0,0.22,'~steering')
+steering_gain = rospy.get_param("~steering_gain",0.3)
+steering_lookahead = rospy.get_param("~steering_lookahead",2.0)
+max_steer = rospy.get_param("~max_steer",0.3)
 my_rate = rospy.Rate(1)
 
 # get speed from parameter
@@ -74,9 +75,8 @@ def ctrl_callback(data):
   # calculate the heading
   theta = 2.0*atan2(qz,qw)
   # add just a little lookahead
-  L = 4.0
-  x = x + L*cos(theta) 
-  y = y + L*sin(theta) 
+  x = x + steering_lookahead*cos(theta) 
+  y = y + steering_lookahead*sin(theta) 
   # find the closest point on the path
   ds = [sqrt((x-p.pose.position.x)*(x-p.pose.position.x)+(y-p.pose.position.y)*(y-p.pose.position.y)) for p in my_path.poses]
   dmin = min(ds)
@@ -85,15 +85,18 @@ def ctrl_callback(data):
   cy = pmin.pose.position.y
   # project on to car's Y-axix (lateral)
   e = (cy-y)*cos(theta)-(cx-x)*sin(theta)
-  # PID control for constant radius
+  # P control for constant radius
   #rospy.loginfo('Time is %f',rospy.get_rostime().to_sec())
-  u = steering_pid.update(e, 0.0, rospy.get_rostime().to_sec())
+  u = steering_gain*e
   # saturate
-  u = brl_drones.rospid.saturate(u,0.3)
+  if u>max_steer:
+    u = max_steer
+  elif u<-max_steer:
+    u = -max_steer
   # command
   v = Point()
   v.x = my_speed
-  v.y = -u
+  v.y = u
   # send it
   pub_steer.publish(v)
   # tell the world

@@ -18,7 +18,7 @@ include "loop.world"
 # include cars in simulation
 # this simulation has two cars
 
-car_cam
+car
 (
   pose [0 1.5 0 0] # [x y z deg]
 )

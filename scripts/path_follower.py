@@ -11,7 +11,7 @@ pub_path = rospy.Publisher('path', Path, queue_size=1)
 pub_pose = rospy.Publisher('pose', PoseStamped, queue_size=1)
 pub_steer = rospy.Publisher('cmd_steer', Point, queue_size=1)
 steering_gain = rospy.get_param("~steering_gain",0.3)
-steering_lookahead = rospy.get_param("~steering_lookahead",2.0)
+steering_lookahead = rospy.get_param("~steering_lookahead",4.0)
 max_steer = rospy.get_param("~max_steer",0.3)
 my_rate = rospy.Rate(1)
 

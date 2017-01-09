@@ -33,7 +33,7 @@
   [30,21.5,0],
   [41.5,10,deg(-90)],
   [30,-1.5,deg(180)],
-  [12,-1.5,deg(180)]
+  [10,-1.5,deg(180)]
   ]</rosparam>
 
   </group>
@@ -45,16 +45,16 @@
   <param name="output_filename" type="string" value="$(find stage_cars)/paths/path3.yaml" />
 
   <rosparam param="waypoints">[
-  [-10,-1.5,deg(180)],
-  [-30,-1.5,deg(180)],
   [-41.5,10,deg(90)],
   [-30,21.5,0],
   [-4.5,21.5,0],
   [1.5,14,deg(-90)],
   [1.5,6,deg(-90)],
   [-6,-1.5,deg(180)],
-  [-10,-1.5,deg(180)]
-  ]</rosparam>
+  [-10,-1.5,deg(180)],
+  [-30,-1.5,deg(180)],
+  [-41.5,10,deg(90)],
+    ]</rosparam>
 
   </group>
 

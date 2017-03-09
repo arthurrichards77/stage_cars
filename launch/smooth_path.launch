@@ -1,61 +1,170 @@
 <launch>
 
-  <group ns="path1">
-
-  <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
-
-  <param name="output_filename" type="string" value="$(find stage_cars)/paths/path1.yaml" />
-
-  <rosparam param="waypoints">[
-  [6,1.5,0],
-  [30,1.5,0],
-  [38.5,10,deg(90)],
-  [30,18.5,deg(180)],
-  [6,18.5,deg(180)],
-  [1.5,14,deg(-90)],
-  [1.5,6,deg(-90)],
-  [6,1.5,0]
-  ]</rosparam>
-
-  </group>
-
-  <group ns="path2">
-
-  <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
-
-  <param name="output_filename" type="string" value="$(find stage_cars)/paths/path2.yaml" />
-
-  <rosparam param="waypoints">[
-  [10,-1.5,deg(180)],
-  [-30,-1.5,deg(180)],
-  [-41.5,10,deg(90)],
-  [-30,21.5,0],
-  [30,21.5,0],
-  [41.5,10,deg(-90)],
-  [30,-1.5,deg(180)],
-  [10,-1.5,deg(180)]
-  ]</rosparam>
-
-  </group>
-
-  <group ns="path3">
-
-  <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
-
-  <param name="output_filename" type="string" value="$(find stage_cars)/paths/path3.yaml" />
-
-  <rosparam param="waypoints">[
-  [-41.5,10,deg(90)],
-  [-30,21.5,0],
-  [-4.5,21.5,0],
-  [1.5,14,deg(-90)],
-  [1.5,6,deg(-90)],
-  [-6,-1.5,deg(180)],
-  [-10,-1.5,deg(180)],
-  [-30,-1.5,deg(180)],
-  [-41.5,10,deg(90)],
+  <group ns="pathAN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathAN.yaml" />
+    <rosparam param="waypoints">[
+      [-30,-1.5,deg(180)],
+      [-41.5,10,deg(90)],
+      [-30,21.5,deg(0)],
     ]</rosparam>
+  </group>
 
+  <group ns="pathAS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathAS.yaml" />
+    <rosparam param="waypoints">[
+      [-30,18.5,deg(180)],
+      [-38.5,10,deg(-90)],
+      [-30,1.5,deg(0)],
+    ]</rosparam>
+  </group>
+
+
+  <group ns="pathCN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCN.yaml" />
+    <rosparam param="waypoints">[
+      [30,1.5,deg(0)],
+      [38.5,10,deg(90)],
+      [30,18.5,deg(180)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathCS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCS.yaml" />
+    <rosparam param="waypoints">[
+      [30,21.5,deg(0)],
+      [41.5,10,deg(-90)],
+      [30,-1.5,deg(180)],
+    ]</rosparam>
+  </group>
+
+
+  <group ns="pathANBS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathANBS.yaml" />
+    <rosparam param="waypoints">[
+      [-30,21.5,deg(0)],
+      [-6,21.5,deg(0)],
+      [1.5,14,deg(-90)],
+      [1.5,6,deg(-90)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathANCS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathANCS.yaml" />
+    <rosparam param="waypoints">[
+      [-30,21.5,deg(0)],
+      [30,21.5,deg(0)],
+    ]</rosparam>
+  </group>
+
+
+  <group ns="pathASBN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathASBN.yaml" />
+    <rosparam param="waypoints">[
+      [-30,1.5,deg(0)],
+      [-6,1.5,deg(0)],
+      [-1.5,6,deg(90)],
+      [-1.5,14,deg(90)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathASCN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathASCN.yaml" />
+    <rosparam param="waypoints">[
+      [-30,1.5,deg(0)],
+      [30,1.5,deg(0)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathBNAS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBNAS.yaml" />
+    <rosparam param="waypoints">[
+      [-1.5,6,deg(90)],
+      [-1.5,14,deg(90)],
+      [-6,18.5,deg(180)],
+      [-30,18.5,deg(180)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathBNCS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBNCS.yaml" />
+    <rosparam param="waypoints">[
+      [-1.5,6,deg(90)],
+      [-1.5,14,deg(90)],
+      [6,21.5,deg(0)],
+      [30,21.5,deg(0)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathBSAN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBSAN.yaml" />
+    <rosparam param="waypoints">[
+      [1.5,14,deg(-90)],
+      [1.5,6,deg(-90)],
+      [-6,-1.5,deg(180)],
+      [-30,-1.5,deg(180)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathBSCN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBSCN.yaml" />
+    <rosparam param="waypoints">[
+      [1.5,14,deg(-90)],
+      [1.5,6,deg(-90)],
+      [6,1.5,0],
+      [30,1.5,0],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathCNBS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCNBS.yaml" />
+    <rosparam param="waypoints">[      
+      [30,18.5,deg(180)],
+      [6,18.5,deg(180)],
+      [1.5,14,deg(-90)],
+      [1.5,6,deg(-90)]
+    ]</rosparam>
+  </group>
+
+  <group ns="pathCNAS">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCNAS.yaml" />
+    <rosparam param="waypoints">[      
+      [30,18.5,deg(180)],
+      [-30,18.5,deg(180)],
+    ]</rosparam>
+  </group>
+
+  <group ns="pathCSBN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCSBN.yaml" />
+    <rosparam param="waypoints">[      
+      [30,-1.5,deg(180)],
+      [6,-1.5,deg(180)],
+      [-1.5,6,deg(90)],
+      [-1.5,14,deg(90)]
+    ]</rosparam>
+  </group>
+
+  <group ns="pathCSAN">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathCSAN.yaml" />
+    <rosparam param="waypoints">[      
+      [30,-1.5,deg(180)],
+      [-30,-1.5,deg(180)],
+    ]</rosparam>
   </group>
 
 </launch>

@@ -4,6 +4,7 @@ import roslib
 roslib.load_manifest('stage_cars')
 from geometry_msgs.msg import Twist, Point, PoseStamped
 from nav_msgs.msg import Path, Odometry
+from std_msgs.msg import Float64
 from math import sin, cos, atan2, sqrt
 import yaml
 
@@ -18,7 +19,12 @@ my_rate = rospy.Rate(1)
 
 # get speed from parameter
 # won't move without it
+global my_speed
 my_speed = rospy.get_param("speed",0.0)
+
+def speed_callback(data):
+  global my_speed
+  my_speed = data.data
 
 # grab path from parameter (smoothing done elsewhere)
 my_path = Path()
@@ -102,6 +108,9 @@ def ctrl_callback(data):
 
 # start the feedback
 pose_sub = rospy.Subscriber('base_pose_ground_truth', Odometry, ctrl_callback)
+
+# and external speed control
+speed_sub = rospy.Subscriber('cmd_speed', Float64, speed_callback)
 
 # local copy of current path for publishing
 my_current_path = Path()

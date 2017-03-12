@@ -8,7 +8,6 @@ Panels:
         - /Status1
         - /Grid1
         - /TF1/Tree1
-        - /Image2
       Splitter Ratio: 0.5
     Tree Height: 358
   - Class: rviz/Selection
@@ -29,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -108,18 +107,6 @@ Visualization Manager:
       Shaft Radius: 0.05
       Shape: Axes
       Topic: /robot_1/pose
-      Value: true
-    - Class: rviz/Image
-      Enabled: true
-      Image Topic: /robot_0/image
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: Image
-      Normalize Range: true
-      Queue Size: 2
-      Transport Hint: raw
-      Unreliable: false
       Value: true
   Enabled: true
   Global Options:

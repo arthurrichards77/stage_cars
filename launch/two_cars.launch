@@ -1,6 +1,6 @@
 <launch>
 
-<arg name="tuning" default="false" />
+<arg name="run_rviz" default="true" />
 
 <node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/two_cars.world" />
 
@@ -9,7 +9,6 @@
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
 
   <node pkg="tf" type="static_transform_publisher" name="link_tf_car0" args="0 1.5 0 0 0 0 world robot_0/odom 100" />
-
 
   <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" />
 
@@ -46,6 +45,6 @@
 
 </group>
 
-<node pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
+<node if="$(arg run_rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
 
 </launch>

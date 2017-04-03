@@ -1,0 +1,53 @@
+<launch>
+
+<arg name="run_rviz" default="true" />
+
+<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/two_following.world" />
+
+<group ns="robot_0">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car0" args="0 1.5 0 0 0 0 world robot_0/odom 100" />
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" />
+
+  <rosparam param="path_file_names" subst_value="true" >[
+  $(find stage_cars)/paths/pathBSCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNAS.yaml,
+  $(find stage_cars)/paths/pathAS.yaml,
+  $(find stage_cars)/paths/pathASCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNBS.yaml,
+  ]</rosparam>
+
+  <param name="speed" type="double" value="8.0" />
+
+</group>
+
+<group ns="robot_1">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="15 1.5 0 0 0 0 world robot_1/odom 100" />
+
+  <rosparam param="path_file_names" subst_value="true" >[
+  $(find stage_cars)/paths/pathBSCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNAS.yaml,
+  $(find stage_cars)/paths/pathAS.yaml,
+  $(find stage_cars)/paths/pathASCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNBS.yaml,
+  ]</rosparam>
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" />
+
+  <param name="speed" type="double" value="8.0" />
+
+</group>
+
+<node if="$(arg run_rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
+
+</launch>

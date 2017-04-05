@@ -41,7 +41,7 @@
 
   <node pkg="stage_cars" type="path_follower.py" name="path_follower" />
 
-  <param name="speed" type="double" value="8.0" />
+  <param name="speed" type="double" value="8.5" />
 
 </group>
 

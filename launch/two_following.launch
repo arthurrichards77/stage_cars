@@ -20,6 +20,9 @@
   $(find stage_cars)/paths/pathASCN.yaml,
   $(find stage_cars)/paths/pathCN.yaml,
   $(find stage_cars)/paths/pathCNBS.yaml,
+  $(find stage_cars)/paths/pathBSAN.yaml,
+  $(find stage_cars)/paths/pathAN.yaml,
+  $(find stage_cars)/paths/pathANBS.yaml,
   ]</rosparam>
 
   <param name="speed" type="double" value="8.0" />

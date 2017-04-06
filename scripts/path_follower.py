@@ -21,6 +21,7 @@ my_rate = rospy.Rate(1)
 # won't move without it
 global my_speed
 my_speed = rospy.get_param("speed",0.0)
+my_latacc = 0.5*9.81
 
 def speed_callback(data):
   global my_speed
@@ -92,9 +93,13 @@ def ctrl_callback(data):
     u = max_steer
   elif u<-max_steer:
     u = -max_steer
+  # speed limit for turns
+  cmd_speed = my_speed
+  if cmd_speed*cmd_speed*abs(u)>my_latacc:
+    cmd_speed = sqrt(my_latacc/abs(u))
   # command
   v = Point()
-  v.x = my_speed
+  v.x = cmd_speed
   v.y = u
   # send it
   pub_steer.publish(v)

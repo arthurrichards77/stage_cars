@@ -5,6 +5,7 @@ roslib.load_manifest('stage_cars')
 from geometry_msgs.msg import Twist, Point, PoseStamped
 from nav_msgs.msg import Path, Odometry
 from std_msgs.msg import Float64
+from sensor_msgs.msg import LaserScan
 from math import sin, cos, atan2, sqrt
 import yaml
 
@@ -21,11 +22,18 @@ my_rate = rospy.Rate(1)
 # won't move without it
 global my_speed
 my_speed = rospy.get_param("speed",0.0)
-my_latacc = 0.5*9.81
+my_latacc = rospy.get_param("latacc",0.5*9.81)
 
 def speed_callback(data):
   global my_speed
   my_speed = data.data
+
+global min_range
+min_range = 1000.0
+
+def laser_callback(data):
+  global min_range
+  min_range = min(data.ranges)
 
 # grab path from parameter (smoothing done elsewhere)
 my_path = Path()
@@ -97,6 +105,9 @@ def ctrl_callback(data):
   cmd_speed = my_speed
   if cmd_speed*cmd_speed*abs(u)>my_latacc:
     cmd_speed = sqrt(my_latacc/abs(u))
+  # check two second gap
+  if cmd_speed*2.0>(min_range-1.0):
+    cmd_speed = (min_range-1.0)/2.0
   # command
   v = Point()
   v.x = cmd_speed
@@ -116,6 +127,9 @@ pose_sub = rospy.Subscriber('base_pose_ground_truth', Odometry, ctrl_callback)
 
 # and external speed control
 speed_sub = rospy.Subscriber('cmd_speed', Float64, speed_callback)
+
+# and laser stopping
+speed_sub = rospy.Subscriber('base_scan', LaserScan, laser_callback)
 
 # local copy of current path for publishing
 my_current_path = Path()

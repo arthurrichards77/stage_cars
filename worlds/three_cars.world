@@ -23,13 +23,13 @@ car
   pose [0 1.5 0 0] # [x y z deg]
 )
 
-car
+car_laser
 (
   pose [15 1.5 0 0] # [x y z deg]
   color "red"
 )
 
-car
+car_laser
 (
   pose [-15 1.5 0 0] # [x y z deg]
   color "green"

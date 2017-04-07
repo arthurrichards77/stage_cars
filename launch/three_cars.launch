@@ -15,10 +15,6 @@
   <rosparam param="path_file_names" subst_value="true" >[
   $(find stage_cars)/paths/pathBSCN.yaml,
   $(find stage_cars)/paths/pathCN.yaml,
-  $(find stage_cars)/paths/pathCNAS.yaml,
-  $(find stage_cars)/paths/pathAS.yaml,
-  $(find stage_cars)/paths/pathASCN.yaml,
-  $(find stage_cars)/paths/pathCN.yaml,
   $(find stage_cars)/paths/pathCNBS.yaml,
   $(find stage_cars)/paths/pathBSAN.yaml,
   $(find stage_cars)/paths/pathAN.yaml,
@@ -26,6 +22,7 @@
   ]</rosparam>
 
   <param name="speed" type="double" value="8.0" />
+  <param name="latacc" type="double" value="20.0" />
 
 </group>
 

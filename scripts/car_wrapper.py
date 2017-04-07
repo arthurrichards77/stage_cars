@@ -38,11 +38,11 @@ def pose_callback(data):
   pub_odom_all.publish(data)
 
 rospy.init_node('car_wrapper', anonymous=True)
-sub_drive = rospy.Subscriber('cmd_steer', Point, pointCallback)
-sub_pose = rospy.Subscriber('base_pose_ground_truth', Odometry, pose_callback)
 pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=1)
 pub_beacon = rospy.Publisher('/beacon', Point, queue_size=1)
 pub_odom_all = rospy.Publisher('/odom_all', Odometry, queue_size=1)
+sub_drive = rospy.Subscriber('cmd_steer', Point, pointCallback)
+sub_pose = rospy.Subscriber('base_pose_ground_truth', Odometry, pose_callback)
 
 try:
   rospy.spin()

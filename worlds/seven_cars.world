@@ -20,7 +20,7 @@ include "loop.world"
 
 car
 (
-  pose [0 1.5 0 0] # [x y z deg]
+  pose [10 1.5 0 0] # [x y z deg]
 )
 
 car_laser

@@ -28,12 +28,19 @@ def speed_callback(data):
   global my_speed
   my_speed = data.data
 
+# global store of 
 global min_range
 min_range = 1000.0
 
 def laser_callback(data):
   global min_range
   min_range = min(data.ranges)
+
+# optional speed schedule - change speed at time points
+global next_speed_sched_index
+next_speed_sched_index = 0
+start_time_secs = rospy.get_time()
+speed_schedule = rospy.get_param("speed_schedule",[])
 
 # grab path from parameter (smoothing done elsewhere)
 my_path = Path()
@@ -101,8 +108,17 @@ def ctrl_callback(data):
     u = max_steer
   elif u<-max_steer:
     u = -max_steer
-  # speed limit for turns
+  # check for speed schedule
+  global my_speed
+  global next_speed_sched_index
+  if len(speed_schedule)>next_speed_sched_index:
+    if rospy.get_time() >= start_time_secs + speed_schedule[next_speed_sched_index][0]:
+      rospy.loginfo("Setting speed to %f at time offset %f" % (speed_schedule[next_speed_sched_index][1],speed_schedule[next_speed_sched_index][0]))
+      my_speed = speed_schedule[next_speed_sched_index][1]
+      next_speed_sched_index+=1
+  # default speed from either schedule or topic
   cmd_speed = my_speed
+  # speed limit for turns
   if cmd_speed*cmd_speed*abs(u)>my_latacc:
     cmd_speed = sqrt(my_latacc/abs(u))
   # check two second gap

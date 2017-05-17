@@ -1,0 +1,69 @@
+<launch>
+
+<arg name="run_rviz" default="true" />
+
+<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/three_cars_counter.world" />
+
+<group ns="robot_0">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car0" args="0 1.5 0 0 0 0 world robot_0/odom 100" />
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" />
+
+  <rosparam param="path_file_names" subst_value="true" >[
+  $(find stage_cars)/paths/pathBSCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNBS.yaml,
+  $(find stage_cars)/paths/pathBSAN.yaml,
+  $(find stage_cars)/paths/pathAN.yaml,
+  $(find stage_cars)/paths/pathANBS.yaml,
+  ]</rosparam>
+
+  <param name="speed" type="double" value="0.0" />
+  <param name="latacc" type="double" value="20.0" />
+
+</group>
+
+<group ns="robot_1">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="15 1.5 0 0 0 0 world robot_1/odom 100" />
+
+  <rosparam param="path_file_names" subst_value="true" >[
+  $(find stage_cars)/paths/pathASCN.yaml,
+  $(find stage_cars)/paths/pathCN.yaml,
+  $(find stage_cars)/paths/pathCNAS.yaml,
+  $(find stage_cars)/paths/pathAS.yaml,
+  ]</rosparam>
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" />
+
+  <param name="speed" type="double" value="8.5" />
+
+</group>
+
+<group ns="robot_2">
+
+  <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" />
+
+  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="-15 -1.5 0 0 0 3.14159265 world robot_1/odom 100" />
+
+  <rosparam param="path_file_names" subst_value="true" >[
+  $(find stage_cars)/paths/pathCSAN.yaml,
+  $(find stage_cars)/paths/pathAN.yaml,
+  $(find stage_cars)/paths/pathANCS.yaml,
+  $(find stage_cars)/paths/pathCS.yaml,
+  ]</rosparam>
+
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" />
+
+  <param name="speed" type="double" value="8.5" />
+
+</group>
+
+<node if="$(arg run_rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find stage_cars)/stage_cars.rviz" />
+
+</launch>

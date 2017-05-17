@@ -95,7 +95,7 @@
     <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
     <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBNAS.yaml" />
     <rosparam param="waypoints">[
-      [-1.5,6,deg(90)],
+      [-1.5,13,deg(90)],
       [-1.5,14,deg(90)],
       [-6,18.5,deg(180)],
       [-30,18.5,deg(180)],
@@ -106,7 +106,7 @@
     <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
     <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBNCS.yaml" />
     <rosparam param="waypoints">[
-      [-1.5,6,deg(90)],
+      [-1.5,13,deg(90)],
       [-1.5,14,deg(90)],
       [6,21.5,deg(0)],
       [30,21.5,deg(0)],
@@ -117,7 +117,7 @@
     <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
     <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBSAN.yaml" />
     <rosparam param="waypoints">[
-      [1.5,14,deg(-90)],
+      [1.5,7,deg(-90)],
       [1.5,6,deg(-90)],
       [-6,-1.5,deg(180)],
       [-30,-1.5,deg(180)],
@@ -128,7 +128,7 @@
     <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
     <param name="output_filename" type="string" value="$(find stage_cars)/paths/pathBSCN.yaml" />
     <rosparam param="waypoints">[
-      [1.5,14,deg(-90)],
+      [1.5,7,deg(-90)],
       [1.5,6,deg(-90)],
       [6,1.5,0],
       [30,1.5,0],

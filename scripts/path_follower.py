@@ -2,16 +2,19 @@
 import rospy
 import roslib
 roslib.load_manifest('stage_cars')
-from geometry_msgs.msg import Twist, Point, PoseStamped
+from geometry_msgs.msg import Twist, Point, PoseStamped, TwistStamped
 from nav_msgs.msg import Path, Odometry
 from std_msgs.msg import Float64
 from sensor_msgs.msg import LaserScan
+from DMS_msgs.msg import DMSPlan
 from math import sin, cos, atan2, sqrt
 import yaml
+import numpy
 
 rospy.init_node('path_follower', anonymous=True)
 pub_path = rospy.Publisher('path', Path, queue_size=1)
 pub_pose = rospy.Publisher('pose', PoseStamped, queue_size=1)
+pub_vel = rospy.Publisher('velocity', TwistStamped, queue_size=1)
 pub_steer = rospy.Publisher('cmd_steer', Point, queue_size=1)
 steering_gain = rospy.get_param("~steering_gain",0.3)
 steering_lookahead = rospy.get_param("~steering_lookahead",4.0)
@@ -28,7 +31,7 @@ def speed_callback(data):
   global my_speed
   my_speed = data.data
 
-# global store of 
+# global store of range to nearest obstacle
 global min_range
 min_range = 1000.0
 
@@ -43,6 +46,7 @@ start_time_secs = rospy.get_time()
 speed_schedule = rospy.get_param("speed_schedule",[])
 
 # grab path from parameter (smoothing done elsewhere)
+global my_path
 my_path = Path()
 my_path.header.frame_id='world'
 
@@ -66,6 +70,16 @@ for pp in path_param:
     my_pose.pose.position.y = pp[1]
     my_path.poses.append(my_pose)
 
+#DMS interface - just store the plan
+global dms_plan
+dms_plan = DMSPlan()
+
+def dms_callback(data):
+  global dms_plan
+  dms_plan = data
+  global my_path
+  my_path = dms_plan.path
+  
 # rolling window information
 global last_index
 last_index=0
@@ -75,6 +89,8 @@ window_len = int(0.25*num_points)
 # callback for control
 def ctrl_callback(data):
   global last_index
+  global dms_plan
+  global my_path
   # extract x and y position information
   x = data.pose.pose.position.x
   y = data.pose.pose.position.y
@@ -86,8 +102,11 @@ def ctrl_callback(data):
   # add just a little lookahead
   x = x + steering_lookahead*cos(theta) 
   y = y + steering_lookahead*sin(theta) 
-  # find the current window
-  path_window = [kk % num_points for kk in range(last_index, last_index+window_len)]
+  # check if we're running on a DMS plan
+  if dms_plan.path.poses:
+    path_window = range(len(my_path.poses))    
+  else:
+    path_window = [kk % num_points for kk in range(last_index, last_index+window_len)]
   # find the closest point on the path
   ds = [sqrt((x-my_path.poses[kk].pose.position.x)*(x-my_path.poses[kk].pose.position.x)+(y-my_path.poses[kk].pose.position.y)*(y-my_path.poses[kk].pose.position.y)) for kk in path_window]
   dmin = min(ds)
@@ -98,7 +117,7 @@ def ctrl_callback(data):
   cy = pmin.pose.position.y
   # store the index for next time
   last_index = point_index
-  # project on to car's Y-axix (lateral)
+  # project on to car's Y-axis (lateral)
   e = (cy-y)*cos(theta)-(cx-x)*sin(theta)
   # P control for constant radius
   #rospy.loginfo('Time is %f',rospy.get_rostime().to_sec())
@@ -116,6 +135,13 @@ def ctrl_callback(data):
       rospy.loginfo("Setting speed to %f at time offset %f" % (speed_schedule[next_speed_sched_index][1],speed_schedule[next_speed_sched_index][0]))
       my_speed = speed_schedule[next_speed_sched_index][1]
       next_speed_sched_index+=1
+  # and check for DMS speed plan
+  if dms_plan.twistPath.twists:
+    time_list = [t.header.stamp.to_sec() for t in dms_plan.twistPath.twists]
+    speed_list = [t.twist.linear.x for t in dms_plan.twistPath.twists]
+    my_speed = numpy.interp(rospy.get_time(),time_list,speed_list,0.0,0.0)
+    #print speed_list
+    #print my_speed
   # default speed from either schedule or topic
   cmd_speed = my_speed
   # speed limit for turns
@@ -134,9 +160,16 @@ def ctrl_callback(data):
   #rospy.loginfo('Got e = %f ctrl=%f', e, u)
   # publish pose info for viewing
   pose_out = PoseStamped()
+  pose_out.header = data.header
   pose_out.header.frame_id = 'world'
   pose_out.pose = data.pose.pose
   pub_pose.publish(pose_out)
+  # and twist stamped for DMS interface
+  vel_out = TwistStamped()
+  vel_out.header = data.header
+  vel_out.header.frame_id = 'world'
+  vel_out.twist = data.twist.twist
+  pub_vel.publish(vel_out)
 
 # start the feedback
 pose_sub = rospy.Subscriber('base_pose_ground_truth', Odometry, ctrl_callback)
@@ -147,13 +180,19 @@ speed_sub = rospy.Subscriber('cmd_speed', Float64, speed_callback)
 # and laser stopping
 speed_sub = rospy.Subscriber('base_scan', LaserScan, laser_callback)
 
+# and the DMS planner
+dms_sub = rospy.Subscriber('dms_plan', DMSPlan, dms_callback)
+
 # local copy of current path for publishing
 my_current_path = Path()
 my_current_path.header.frame_id='world'
 
 while not rospy.is_shutdown():
+  if dms_plan.path.poses:
+    current_window = range(len(my_path.poses))    
+  else:
     current_window = [kk % num_points for kk in range(last_index, last_index+window_len)]
-    my_current_path.poses = [my_path.poses[kk] for kk in current_window]
-    pub_path.publish(my_current_path)
-    my_rate.sleep()
+  my_current_path.poses = [my_path.poses[kk] for kk in current_window]
+  pub_path.publish(my_current_path)
+  my_rate.sleep()
 

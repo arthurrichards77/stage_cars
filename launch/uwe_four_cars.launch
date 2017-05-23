@@ -2,7 +2,7 @@
 
 <arg name="run_rviz" default="true" />
 
-<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/three_cars_counter.world" />
+<node pkg="stage_ros" type="stageros" name="stage" args="$(find stage_cars)/worlds/uwe_four_cars.world" />
 
 <group ns="robot_0">
 
@@ -13,12 +13,13 @@
   <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" required="true" />
 
   <rosparam param="path_file_names" subst_value="true" >[
-  $(find stage_cars)/paths/pathBSCN.yaml,
-  $(find stage_cars)/paths/pathCN.yaml,
-  $(find stage_cars)/paths/pathCNBS.yaml,
-  $(find stage_cars)/paths/pathBSAN.yaml,
-  $(find stage_cars)/paths/pathAN.yaml,
-  $(find stage_cars)/paths/pathANBS.yaml,
+  $(find stage_cars)/paths/path_segment_1.yaml,
+  $(find stage_cars)/paths/path_segment_2.yaml,
+  $(find stage_cars)/paths/path_segment_3.yaml,
+  $(find stage_cars)/paths/path_segment_4.yaml,
+  $(find stage_cars)/paths/path_segment_5.yaml,
+  $(find stage_cars)/paths/path_segment_6.yaml,
+  $(find stage_cars)/paths/path_segment_7.yaml,
   ]</rosparam>
 
   <param name="speed" type="double" value="0.0" />
@@ -30,13 +31,13 @@
 
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" required="true" />
 
-  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="15 1.5 0 0 0 0 world robot_1/odom 100" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="15 1.5 0 0 0 0 world robot_1/odom 100" /> -->
 
   <rosparam param="path_file_names" subst_value="true" >[
-  $(find stage_cars)/paths/pathASCN.yaml,
-  $(find stage_cars)/paths/pathCN.yaml,
-  $(find stage_cars)/paths/pathCNAS.yaml,
-  $(find stage_cars)/paths/pathAS.yaml,
+  $(find stage_cars)/paths/northBound.yaml,
+  $(find stage_cars)/paths/gateEnd.yaml,
+  $(find stage_cars)/paths/southBound.yaml,
+  $(find stage_cars)/paths/futureSpace.yaml,
   ]</rosparam>
 
   <node pkg="stage_cars" type="path_follower.py" name="path_follower" required="true" />
@@ -49,13 +50,13 @@
 
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" required="true" />
 
-  <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="-15 -1.5 0 0 0 3.14159265 world robot_1/odom 100" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="-15 -1.5 0 0 0 3.14159265 world robot_1/odom 100" /> -->
 
   <rosparam param="path_file_names" subst_value="true" >[
-  $(find stage_cars)/paths/pathCSAN.yaml,
-  $(find stage_cars)/paths/pathAN.yaml,
-  $(find stage_cars)/paths/pathANCS.yaml,
-  $(find stage_cars)/paths/pathCS.yaml,
+  $(find stage_cars)/paths/southBound.yaml,
+  $(find stage_cars)/paths/futureSpace.yaml,
+  $(find stage_cars)/paths/northBound.yaml,
+  $(find stage_cars)/paths/gateEnd.yaml,
   ]</rosparam>
 
   <node pkg="stage_cars" type="path_follower.py" name="path_follower" required="true" />

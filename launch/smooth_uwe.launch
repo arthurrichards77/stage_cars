@@ -1,0 +1,54 @@
+<launch>
+
+  <group ns="gateEnd">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/gateEnd.yaml" />
+    <rosparam param="waypoints">[
+      [34,0,deg(59)],
+      [49,25,deg(59)],
+      [46,34,deg(149)],
+      [48,43,deg(59)],
+      [56,43,deg(-21)],
+      [59,34,deg(-121)],
+      [38,0,deg(-121)],
+    ]</rosparam>
+  </group>
+
+  <group ns="southBound">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/southBound.yaml" />
+    <rosparam param="waypoints">[
+      [59,34,deg(-121)],
+      [38,0,deg(-121)],
+      [20,-20,deg(-122)],
+      [-26,-93,deg(-122)]
+    ]</rosparam>
+  </group>
+
+  <group ns="futureSpace">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/futureSpace.yaml" />
+    <rosparam param="waypoints">[
+      [20,-20,deg(-122)],
+      [-26,-93,deg(-122)],
+      [-38,-97,deg(148)],
+      [-42,-88,deg(58)],
+      [-32,-81,deg(-32)],
+      [-21.7,-77.3,deg(58)],
+      [15.8,-20,deg(58)],
+    ]</rosparam>
+  </group>
+
+  <group ns="northBound">
+    <node pkg="stage_cars" type="path_smoother.py" name="path_smoother" output="screen" cwd="node" />
+    <param name="output_filename" type="string" value="$(find stage_cars)/paths/northBound.yaml" />
+    <rosparam param="waypoints">[
+      [-21.7,-77.3,deg(58)],
+      [15.8,-20,deg(58)],
+      [34,0,deg(59)],
+      [49,25,deg(59)],
+    ]</rosparam>
+  </group>
+
+
+</launch>

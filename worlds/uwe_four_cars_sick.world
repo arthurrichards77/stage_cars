@@ -1,0 +1,47 @@
+# set the resolution of the underlying raytrace model in meters
+# i.e. this is the size of one pixel
+resolution 0.2
+
+# simulation timestep in milliseconds
+interval_sim 100  
+
+# world is 400m x 400m, i.e. 2000 x 2000 pixels
+window
+(
+  size [2000 2000]
+)
+
+include "car.inc"
+
+include "sick_lms200.inc"
+
+# include cars in simulation
+# this simulation has four cars
+
+car
+(
+  pose [-15 -76 0 -120] # [x y z deg]
+  sicklaser200
+  (
+    pose [3.1 0 -1.2 0.0]
+  )
+)
+
+car_laser
+(
+  pose [5 -40 0 58] # [x y z deg]
+  color "red"
+)
+
+car_laser
+(
+  pose [50 20 0 -121] # [x y z deg]
+  color "green"
+)
+
+car_laser
+(
+  pose [-17 -61 0 -120] # [x y z deg]
+)
+
+

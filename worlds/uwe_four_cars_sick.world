@@ -12,6 +12,7 @@ window
 )
 
 include "car.inc"
+include "tree.inc"
 
 include "sick_lms200.inc"
 
@@ -44,4 +45,27 @@ car_laser
   pose [-17 -61 0 -120] # [x y z deg]
 )
 
+tree
+(
+  pose [0 -1 0 45] # [x y z deg]
+)
 
+tree
+(
+  pose [0 50 0 45] # [x y z deg]
+)
+
+tree
+(
+  pose [10 20 0 45] # [x y z deg]
+)
+
+tree
+(
+  pose [-45 -50 0 45] # [x y z deg]
+)
+
+tree
+(
+  pose [25 -25 0 45] # [x y z deg]
+)

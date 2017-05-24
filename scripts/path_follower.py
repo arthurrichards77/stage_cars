@@ -13,12 +13,15 @@ import numpy
 
 rospy.init_node('path_follower', anonymous=True)
 pub_path = rospy.Publisher('path', Path, queue_size=1)
-pub_pose = rospy.Publisher('pose', PoseStamped, queue_size=1)
-pub_vel = rospy.Publisher('velocity', TwistStamped, queue_size=1)
 pub_steer = rospy.Publisher('cmd_steer', Point, queue_size=1)
+
 steering_gain = rospy.get_param("~steering_gain",0.3)
 steering_lookahead = rospy.get_param("~steering_lookahead",4.0)
 max_steer = rospy.get_param("~max_steer",0.3)
+
+gap_ahead = rospy.get_param("~gap_ahead",2.0)
+
+# rate for path publication
 my_rate = rospy.Rate(1)
 
 # get speed from parameter
@@ -148,8 +151,8 @@ def ctrl_callback(data):
   if cmd_speed*cmd_speed*abs(u)>my_latacc:
     cmd_speed = sqrt(my_latacc/abs(u))
   # check two second gap
-  if cmd_speed*2.0>(min_range-1.0):
-    cmd_speed = (min_range-1.0)/2.0
+  if cmd_speed*gap_ahead>(min_range-1.0):
+    cmd_speed = (min_range-1.0)/gap_ahead
   # command
   v = Point()
   v.x = cmd_speed
@@ -158,18 +161,6 @@ def ctrl_callback(data):
   pub_steer.publish(v)
   # tell the world
   #rospy.loginfo('Got e = %f ctrl=%f', e, u)
-  # publish pose info for viewing
-  pose_out = PoseStamped()
-  pose_out.header = data.header
-  pose_out.header.frame_id = 'world'
-  pose_out.pose = data.pose.pose
-  pub_pose.publish(pose_out)
-  # and twist stamped for DMS interface
-  vel_out = TwistStamped()
-  vel_out.header = data.header
-  vel_out.header.frame_id = 'world'
-  vel_out.twist = data.twist.twist
-  pub_vel.publish(vel_out)
 
 # start the feedback
 pose_sub = rospy.Subscriber('base_pose_ground_truth', Odometry, ctrl_callback)

@@ -8,9 +8,9 @@
 
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" required="true" />
 
-  <node pkg="tf" type="static_transform_publisher" name="link_tf_car0" args="0 1.5 0 0 0 0 wildcat robot_0/base_footprint 100" />
-
-  <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" required="true" />
+  <node pkg="stage_cars" type="path_follower.py" name="path_follower" output="screen" required="true">
+    <param name="gap_ahead" type="double" value="0.00001" />
+  </node>
 
   <rosparam param="path_file_names" subst_value="true" >[
   $(find stage_cars)/paths/path_segment_1.yaml,
@@ -31,8 +31,6 @@
 
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" required="true" />
 
-  <!-- <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="15 1.5 0 0 0 0 world robot_1/odom 100" /> -->
-
   <rosparam param="path_file_names" subst_value="true" >[
   $(find stage_cars)/paths/northBound.yaml,
   $(find stage_cars)/paths/gateEnd.yaml,
@@ -49,8 +47,6 @@
 <group ns="robot_2">
 
   <node pkg="stage_cars" type="car_wrapper.py" name="car_wrapper" required="true" />
-
-  <!-- <node pkg="tf" type="static_transform_publisher" name="link_tf_car1" args="-15 -1.5 0 0 0 3.14159265 world robot_1/odom 100" /> -->
 
   <rosparam param="path_file_names" subst_value="true" >[
   $(find stage_cars)/paths/southBound.yaml,
